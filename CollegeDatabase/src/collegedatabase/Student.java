@@ -20,6 +20,7 @@ public class Student extends javax.swing.JFrame {
         this.home();
         this.loadAttendance();
         this.loadScore();
+        this.loadAccount();
     }
 
     private void home(){
@@ -74,7 +75,7 @@ public class Student extends javax.swing.JFrame {
         String fString = new String();
         
         try {
-            fString += String.format("%11s|%20s |%10s |%30s\n","Course ID","Date","Status","Reason");
+            fString += String.format("%11s|%22s |%11s |%30s\n","Course ID","Date","Status","Reason");
             ResultSet data = ld.getData("select * from attendance2 where sid="+this.id);
             while(data.next()){
                 System.out.println("..");
@@ -82,7 +83,11 @@ public class Student extends javax.swing.JFrame {
                 date = data.getString("tdate");
                 status = data.getString("status");
                 reason = data.getString("reason");
-                fString += String.format("%11s |%15s |%12s |%30s\n", courseId,date,status,reason);
+                
+                if(reason == null)
+                    reason = "Reason not given";
+                
+                fString += String.format("%11s |%16s |%15s |%30s\n", courseId,date,status,reason);
                 
             }
         } catch (SQLException ex) {
@@ -135,7 +140,7 @@ public class Student extends javax.swing.JFrame {
     
     private void loadScore(){
         String courseCode,courseName,type;
-        String fString = new String(String.format("%-16s|%-18s|%-10s|%-10s|%s\n", "Course Code","Course Name", "Type", "Test No.","IA Score"));
+        String fString = new String(String.format("%-15s| %-10s| %-16s| %-10s|%s\n", "Course Code","IA Score", "Type", "Test No.","Course Name"));
         int score,testNo;
         ResultSet data = ld.getData("select score.course_id, course.course_name, course.type, score.ia_score, score.test_no\n" +
                                     "from course\n" +
@@ -150,7 +155,7 @@ public class Student extends javax.swing.JFrame {
                 type = data.getString("type");
                 score = data.getInt("ia_score");
                 testNo = data.getInt("test_no");
-                fString+= String.format("%-20s %-25s %-15s %-10d %d\n", courseCode, courseName, type,testNo,score);
+                fString+= String.format("%-20s| %-14d| %-15s| %-16d|%s\n", courseCode,score , type,testNo,courseName);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Student.class.getName()).log(Level.SEVERE, null, ex);
@@ -198,6 +203,34 @@ public class Student extends javax.swing.JFrame {
         }
 
     }
+    
+    
+    private void loadAccount(){
+        String sql = "select addmission_type, fees, sem\n" +
+                     "from account\n" +
+                     "where sid ="+this.id;
+        int fees=0,sem=0;
+        String addtype = new String();
+        
+        ResultSet data = ld.getData(sql);
+        
+        try {
+            while(data.next()){
+                fees = data.getInt("fees");
+                sem = data.getInt("sem");
+                addtype = data.getString("addmission_type");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Student.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(fees != 0)
+            FEES.setText("Fees to be paid    : "+fees);
+        else
+            FEES.setText("Fees to be paid    : Fees Paid.");
+        
+        SEM.setText("Semester              : "+sem);
+        ADDTYPE.setText("Addmission type : "+addtype);
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -214,6 +247,9 @@ public class Student extends javax.swing.JFrame {
         Dept = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        FEES = new javax.swing.JLabel();
+        ADDTYPE = new javax.swing.JLabel();
+        SEM = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         course_code = new javax.swing.JTextField();
@@ -242,30 +278,37 @@ public class Student extends javax.swing.JFrame {
         jTabbedPane1.setForeground(new java.awt.Color(236, 15, 15));
         jTabbedPane1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
 
-        jPanel2.setBackground(new java.awt.Color(0, 254, 239));
+        jPanel2.setBackground(new java.awt.Color(22, 31, 89));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(0, 153, 255)));
 
         jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Welcome");
         jLabel1.setToolTipText("");
 
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("jLabel2");
 
         first_name.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        first_name.setForeground(new java.awt.Color(255, 255, 255));
         first_name.setText("jLabel2");
 
         last_name.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        last_name.setForeground(new java.awt.Color(255, 255, 255));
         last_name.setText("jLabel2");
 
         email.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        email.setForeground(new java.awt.Color(255, 255, 255));
         email.setText("jLabel2");
 
         addr.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        addr.setForeground(new java.awt.Color(255, 255, 255));
         addr.setText("jLabel2");
 
         Dept.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        Dept.setForeground(new java.awt.Color(255, 255, 255));
         Dept.setText("jLabel2");
 
         jButton3.setBackground(new java.awt.Color(163, 228, 215));
@@ -316,23 +359,53 @@ public class Student extends javax.swing.JFrame {
                 .addComponent(addr)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Dept)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addComponent(jButton3)
                 .addContainerGap())
         );
 
-        jPanel3.setBackground(new java.awt.Color(0, 254, 239));
+        jPanel3.setBackground(new java.awt.Color(22, 31, 89));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        FEES.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        FEES.setForeground(new java.awt.Color(255, 255, 255));
+        FEES.setText("jLabel2");
+
+        ADDTYPE.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        ADDTYPE.setForeground(new java.awt.Color(255, 255, 255));
+        ADDTYPE.setText("jLabel2");
+
+        SEM.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        SEM.setForeground(new java.awt.Color(255, 255, 255));
+        SEM.setText("jLabel2");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 320, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(FEES, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(ADDTYPE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(SEM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(FEES)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ADDTYPE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(SEM)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -405,7 +478,7 @@ public class Student extends javax.swing.JFrame {
                 .addComponent(jButton1)
                 .addGap(20, 20, 20)
                 .addComponent(jLabel5)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
 
         jPanel5.setBackground(new java.awt.Color(22, 31, 89));
@@ -419,7 +492,7 @@ public class Student extends javax.swing.JFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new java.awt.Color(22, 31, 89));
         jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 14)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -515,7 +588,7 @@ public class Student extends javax.swing.JFrame {
                 .addComponent(jButton2)
                 .addGap(20, 20, 20)
                 .addComponent(jLabel7)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
 
         jPanel9.setBackground(new java.awt.Color(22, 31, 89));
@@ -529,7 +602,7 @@ public class Student extends javax.swing.JFrame {
         jTextArea2.setEditable(false);
         jTextArea2.setBackground(new java.awt.Color(22, 31, 89));
         jTextArea2.setColumns(20);
-        jTextArea2.setFont(new java.awt.Font("Tempus Sans ITC", 0, 14)); // NOI18N
+        jTextArea2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jTextArea2.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
@@ -635,7 +708,10 @@ public class Student extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ADDTYPE;
     private javax.swing.JLabel Dept;
+    private javax.swing.JLabel FEES;
+    private javax.swing.JLabel SEM;
     private javax.swing.JLabel addr;
     private javax.swing.JTextField course_code;
     private javax.swing.JTextField course_code1;

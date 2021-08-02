@@ -18,9 +18,9 @@ public class faculty extends javax.swing.JFrame {
         this.marksUpload();
     }
     
-    private void marksUpload(){
+    private void marksUpload(){//Display function, displays on screen
         ResultSet data = ld.getData("select * from score");
-        String table = new String("   ID     TestNo  SCore    Code     \t  Date             Time\n");
+        String table = new String("   ID     TestNo  SCore    Code       Date             Time\n");
         int sid=0,testNo=0,score=0;
         String courseCode= new String();
         String date = new String();
@@ -34,7 +34,7 @@ public class faculty extends javax.swing.JFrame {
                 courseCode = data.getString("course_id");
                 date = data.getString("tdate");
                 time = data.getString("ttime");
-                table+=" "+sid+"      "+testNo+"         "+score+"       "+courseCode+"   "+date+"    "+time+"\n";
+                table+=" "+sid+"      "+testNo+"          "+score+"       "+courseCode+"   "+date+"    "+time+"\n";
                 
             }
                 } catch (SQLException ex) {
@@ -43,14 +43,17 @@ public class faculty extends javax.swing.JFrame {
         jTextArea1.setText(table);
     }
     
-    private void setMarks(){
+    private void setMarks(){//Set marks in database
         String sid = jTextField1.getText();
         String code = jTextField2.getText();
         String no = jTextField3.getText();
         String score = jTextField4.getText();
         String date = jTextField5.getText();
         String time = jTextField6.getText();
-        
+        if(sid.isBlank() || code.isBlank() || no.isBlank() || score.isBlank() || time.isBlank()){
+            jLabel15.setText("Fill all details");
+            return;
+        }
         String sql = "INSERT INTO SCORE VALUES("+sid+",\'"+code+"\',"+no+","+score+","+"\'"+date+"\',"+"\'"+time+"\')";
         System.out.println(sql);
         
@@ -79,7 +82,7 @@ public class faculty extends javax.swing.JFrame {
                 name = data2.getString("first_name")+" "+data2.getString("last_name");
             }
             fString = "Name : "+name+"\n";
-            fString += String.format("%11s|%20s |%10s |%30s\n","Course ID","Date","Status","Reason");
+            fString += String.format("%11s|%20s |%10s |%25s\n","Course ID","Date","Status","Reason");
             ResultSet data = ld.getData("select * from attendance2 where sid="+sid);
             while(data.next()){
                 System.out.println("..");
@@ -87,7 +90,7 @@ public class faculty extends javax.swing.JFrame {
                 date = data.getString("tdate");
                 status = data.getString("status");
                 reason = data.getString("reason");
-                fString += String.format("%11s |%15s |%12s |%30s\n", courseId,date,status,reason);
+                fString += String.format("%11s |%15s |%13s |%25s\n", courseId,date,status,reason);
                 
             }
         } catch (SQLException ex) {
@@ -103,6 +106,11 @@ public class faculty extends javax.swing.JFrame {
         String reason = jTextField12.getText();
         String date = jTextField9.getText();
         String time = jTextField10.getText();
+        
+        if(sid.isBlank() || code.isBlank() || status.isBlank() || time.isBlank()){
+            jLabel15.setText("Fill all details");
+            return;
+        }
         
         //change the primary key
         String sql = "INSERT INTO ATTENDANCE2 VALUES("+sid+",\'"+code+"\',"+"\'"+date+"\'"+","+"\'"+time+"\'"+","+"\'"+status+"\',"+"\'"+reason+"\')";
@@ -241,9 +249,10 @@ public class faculty extends javax.swing.JFrame {
 
         jTabbedPane1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
 
-        jPanel2.setBackground(new java.awt.Color(224, 247, 250));
+        jPanel2.setBackground(new java.awt.Color(22, 31, 89));
 
         jLabel1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Welcome, Name");
         jLabel1.setToolTipText("");
@@ -259,34 +268,34 @@ public class faculty extends javax.swing.JFrame {
             }
         });
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBackground(new java.awt.Color(22, 31, 89));
 
         jLabel2.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(173, 20, 87));
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("FID : ");
         jLabel2.setToolTipText("");
 
         jLabel3.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(173, 20, 87));
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Qualification : ");
 
         jLabel4.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(173, 20, 87));
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Experience : ");
         jLabel4.setToolTipText("");
 
         jLabel5.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(173, 20, 87));
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Date Of Birth : ");
         jLabel5.setToolTipText("");
 
         jLabel6.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(173, 20, 87));
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Address : ");
         jLabel6.setToolTipText("");
 
         jLabel9.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(173, 20, 87));
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Department : ");
         jLabel9.setToolTipText("");
 
@@ -325,10 +334,10 @@ public class faculty extends javax.swing.JFrame {
         jLabel3.getAccessibleContext().setAccessibleName("qual");
         jLabel3.getAccessibleContext().setAccessibleDescription("");
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBackground(new java.awt.Color(22, 31, 89));
 
         jLabel24.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
-        jLabel24.setForeground(new java.awt.Color(173, 20, 87));
+        jLabel24.setForeground(new java.awt.Color(255, 255, 255));
         jLabel24.setText("Teaches : ");
         jLabel24.setToolTipText("");
 
@@ -385,15 +394,17 @@ public class faculty extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Home", jPanel2);
 
-        jPanel3.setBackground(new java.awt.Color(163, 228, 215));
+        jPanel3.setBackground(new java.awt.Color(22, 31, 89));
 
         jLabel7.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Student ID :");
 
         jTextField1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
         jTextField1.setToolTipText("");
 
         jLabel8.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Course Code :");
         jLabel8.setToolTipText("");
 
@@ -401,6 +412,7 @@ public class faculty extends javax.swing.JFrame {
         jTextField2.setToolTipText("");
 
         jLabel10.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Test No. :");
         jLabel10.setToolTipText("");
 
@@ -408,6 +420,7 @@ public class faculty extends javax.swing.JFrame {
         jTextField3.setToolTipText("");
 
         jLabel11.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Score :");
         jLabel11.setToolTipText("");
 
@@ -415,12 +428,15 @@ public class faculty extends javax.swing.JFrame {
         jTextField4.setToolTipText("");
 
         jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(22, 31, 89));
         jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Tempus Sans ITC", 0, 13)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        jLabel12.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Tempus Sans ITC", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Scores");
 
@@ -436,6 +452,7 @@ public class faculty extends javax.swing.JFrame {
         });
 
         jLabel13.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Date :");
         jLabel13.setToolTipText("");
 
@@ -444,6 +461,7 @@ public class faculty extends javax.swing.JFrame {
         jTextField5.setToolTipText("");
 
         jLabel14.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Time:");
         jLabel14.setToolTipText("");
 
@@ -478,9 +496,9 @@ public class faculty extends javax.swing.JFrame {
                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(117, 117, 117)
+                        .addGap(115, 115, 115)
                         .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7)
@@ -544,23 +562,27 @@ public class faculty extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel12)
                         .addGap(3, 3, 3)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2))
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Marks Upload", jPanel3);
 
-        jPanel1.setBackground(new java.awt.Color(249, 231, 159));
+        jPanel1.setBackground(new java.awt.Color(22, 31, 89));
 
-        jPanel6.setBackground(new java.awt.Color(247, 220, 111));
+        jPanel6.setBackground(new java.awt.Color(22, 31, 89));
 
+        jTextArea2.setEditable(false);
+        jTextArea2.setBackground(new java.awt.Color(22, 31, 89));
         jTextArea2.setColumns(20);
+        jTextArea2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jTextArea2.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
 
@@ -577,6 +599,7 @@ public class faculty extends javax.swing.JFrame {
         });
 
         jLabel16.setFont(new java.awt.Font("Tempus Sans ITC", 1, 14)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Attendance");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -586,18 +609,22 @@ public class faculty extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(attdSid, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(117, 117, 117)
+                                .addComponent(jButton4))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(116, 116, 116)
+                                .addComponent(jLabel16)))
+                        .addGap(0, 112, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(117, 117, 117)
-                        .addComponent(jButton4))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(116, 116, 116)
-                        .addComponent(jLabel16))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane2)))
+                .addContainerGap())
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(attdSid, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -605,26 +632,30 @@ public class faculty extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2)
+                .addGap(18, 18, 18)
                 .addComponent(attdSid, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton4)
-                .addGap(30, 30, 30))
+                .addContainerGap())
         );
 
         jLabel17.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Student ID :");
 
         jLabel18.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Course Code :");
         jLabel18.setToolTipText("");
 
         jLabel19.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("Date :");
         jLabel19.setToolTipText("");
 
         jLabel20.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("Time:");
         jLabel20.setToolTipText("");
 
@@ -651,10 +682,12 @@ public class faculty extends javax.swing.JFrame {
         });
 
         jLabel21.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Status:");
         jLabel21.setToolTipText("");
 
         jLabel22.setFont(new java.awt.Font("Tempus Sans ITC", 0, 18)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setText("Reason:");
         jLabel22.setToolTipText("");
 
